@@ -807,6 +807,17 @@
           context.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
         };
 
+        const fitCanvasText = (context, text, maxWidth, maxSize, weight = 900, family = "Arial", minSize = 14, spacing = 0) => {
+          let size = maxSize;
+          context.letterSpacing = `${spacing}px`;
+          while (size > minSize) {
+            context.font = `${weight} ${size}px ${family}`;
+            if (context.measureText(String(text)).width <= maxWidth) break;
+            size -= 2;
+          }
+          return size;
+        };
+
         const saveStory = async () => {
           saveStoryBtn.disabled = true;
           saveStoryBtn.textContent = "SAVING…";
@@ -831,11 +842,11 @@
             context.textBaseline = "alphabetic";
             context.fillStyle = "#fff";
             context.textAlign = "left";
-            context.font = "900 54px Arial";
+            fitCanvasText(context, "CINDY", 360, 54, 900);
             context.fillText("CINDY", 76, 114);
             context.textAlign = "right";
             context.fillStyle = "#c2c2c2";
-            context.font = "800 23px Arial";
+            fitCanvasText(context, stats.date, 360, 23, 800);
             context.fillText(stats.date, 1004, 110);
 
             context.strokeStyle = "rgba(255,255,255,.32)";
@@ -847,14 +858,14 @@
 
             context.textAlign = "left";
             context.fillStyle = "#c8c8c8";
-            context.font = "800 24px Arial";
+            fitCanvasText(context, "WORKOUT COMPLETE", 520, 24, 800, "Arial", 18, 2);
             context.fillText("WORKOUT COMPLETE", 76, 272);
             context.fillStyle = "#fff";
-            context.font = "900 360px Impact, Arial Narrow, Arial";
+            fitCanvasText(context, String(stats.rounds), 900, 360, 900, "Impact, Arial Narrow, Arial", 180);
             context.fillText(String(stats.rounds), 62, 635);
-            context.font = "900 28px Arial";
-            context.letterSpacing = "6px";
+            fitCanvasText(context, "ROUNDS", 300, 28, 900, "Arial", 20, 6);
             context.fillText("ROUNDS", 78, 704);
+            context.letterSpacing = "0px";
 
             const metricTop = 840;
             context.fillStyle = "rgba(0,0,0,.7)";
@@ -867,13 +878,17 @@
             context.stroke();
 
             context.fillStyle = "#a8a8a8";
-            context.font = "800 20px Arial";
+            fitCanvasText(context, "TOTAL TIME", 380, 20, 800, "Arial", 15, 1);
             context.fillText("TOTAL TIME", 112, metricTop + 62);
+            fitCanvasText(context, "AVG / ROUND", 380, 20, 800, "Arial", 15, 1);
             context.fillText("AVG / ROUND", 576, metricTop + 62);
             context.fillStyle = "#fff";
-            context.font = "900 76px Arial";
-            context.fillText(formatTime(stats.elapsed, "round"), 112, metricTop + 164);
-            context.fillText(formatTime(stats.average, "round"), 576, metricTop + 164);
+            const totalTimeText = formatTime(stats.elapsed, "round");
+            const averageText = formatTime(stats.average, "round");
+            fitCanvasText(context, totalTimeText, 380, 76, 900, "Arial", 46);
+            context.fillText(totalTimeText, 112, metricTop + 164);
+            fitCanvasText(context, averageText, 380, 76, 900, "Arial", 46);
+            context.fillText(averageText, 576, metricTop + 164);
 
             const repsTop = 1140;
             const repWidth = 928 / 3;
@@ -895,21 +910,21 @@
             reps.forEach(([value, label], index) => {
               const center = 76 + repWidth * index + repWidth / 2;
               context.fillStyle = "#fff";
-              context.font = "900 68px Arial";
+              fitCanvasText(context, String(value), repWidth - 44, 68, 900, "Arial", 38);
               context.fillText(String(value), center, repsTop + 108);
               context.fillStyle = "#aaa";
-              context.font = "800 18px Arial";
+              fitCanvasText(context, label, repWidth - 36, 18, 800, "Arial", 13, 1);
               context.fillText(label, center, repsTop + 164);
             });
 
             context.textAlign = "left";
             context.fillStyle = "#fff";
-            context.font = "900 28px Arial";
-            context.fillText("CINDY / AMRAP 20", 76, 1782);
-            context.textAlign = "right";
+            fitCanvasText(context, "CINDY / AMRAP 20", 600, 28, 900, "Arial", 18);
+            context.fillText("CINDY / AMRAP 20", 76, 1754);
             context.fillStyle = "#9b9b9b";
-            context.font = "800 18px Arial";
-            context.fillText("5 PULL-UPS  ·  10 PUSH-UPS  ·  15 SQUATS", 1004, 1782);
+            fitCanvasText(context, "5 PULL-UPS  ·  10 PUSH-UPS  ·  15 SQUATS", 900, 18, 800, "Arial", 13, 1);
+            context.fillText("5 PULL-UPS  ·  10 PUSH-UPS  ·  15 SQUATS", 76, 1802);
+            context.letterSpacing = "0px";
 
             const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
             if (!blob) throw new Error("Image export failed");
