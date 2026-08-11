@@ -16,9 +16,9 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: 22.13.0
           cache: npm
@@ -44,7 +44,7 @@ jobs:
           }
           $lines | Set-Content -Encoding ascii release/SHA256SUMS.txt
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: round-27-x64
           path: |
@@ -62,7 +62,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: round-27-x64
           path: release
