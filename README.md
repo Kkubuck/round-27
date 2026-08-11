@@ -13,7 +13,9 @@
 
 </div>
 
-![Round 27 timer interface](docs/preview.png)
+![Round 27 live timer and workout result showcase](docs/round-27-readme-showcase.png)
+
+<p align="center"><sub>Live countdown · adaptive round target · round history · rep totals · 1080 × 1920 Story export</sub></p>
 
 ## Download
 
