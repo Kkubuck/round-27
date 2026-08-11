@@ -39,6 +39,9 @@ yarn-error.log*
 /outputs/
 /work/
 /mobile-dist/
+/desktop-dist/
+/desktop-resources/
+/release/
 /android/.gradle/
 /android/local.properties
 /android/app/build/

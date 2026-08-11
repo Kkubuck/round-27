@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { copyFile, cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -20,17 +20,17 @@ html = html
   .replace(
     bridgeMarker,
     `    <script src="./native-bridge.js"></script>\n${bridgeMarker}`,
-  )
-  .replaceAll('"/story-bg.png"', '"./story-bg.png"');
+  );
 
 await writeFile(resolve(outputRoot, "index.html"), html, "utf8");
 await copyFile(
-  resolve(projectRoot, "public", "story-bg.png"),
-  resolve(outputRoot, "story-bg.png"),
-);
-await copyFile(
   resolve(projectRoot, "public", "favicon.svg"),
   resolve(outputRoot, "favicon.svg"),
+);
+await cp(
+  resolve(projectRoot, "public", "backgrounds"),
+  resolve(outputRoot, "backgrounds"),
+  { recursive: true },
 );
 
 await build({

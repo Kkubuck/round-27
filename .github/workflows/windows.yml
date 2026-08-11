@@ -1,0 +1,48 @@
+name: Windows desktop release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows-app:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+
+      - run: npm ci
+      - run: npm run check:desktop
+      - run: npm run desktop:package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: round-27-windows-x64
+          path: |
+            release/portable/Round-27-Portable-*.exe
+            release/installer/Round-27-Setup-*.exe
+          if-no-files-found: error
+
+      - name: Publish tagged release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create $env:GITHUB_REF_NAME
+          release/portable/Round-27-Portable-*.exe
+          release/installer/Round-27-Setup-*.exe
+          --generate-notes
+          --title "Round 27 $env:GITHUB_REF_NAME"

@@ -7,8 +7,9 @@ type HapticKind = "light" | "heavy" | "success";
 
 type Round27NativeBridge = {
   isNative: boolean;
+  platform: "android" | "windows";
   haptic: (kind?: HapticKind) => Promise<void>;
-  sharePng: (dataUrl: string, fileName: string) => Promise<void>;
+  sharePng: (dataUrl: string, fileName: string) => Promise<void | boolean>;
 };
 
 declare global {
@@ -50,6 +51,7 @@ const sharePng = async (dataUrl: string, fileName: string) => {
 
 window.Round27Native = {
   isNative: true,
+  platform: "android",
   haptic,
   sharePng,
 };

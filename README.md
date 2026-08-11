@@ -1,6 +1,6 @@
 # Round 27
 
-Round 27 is a focused Cindy and AMRAP pace timer for web and Android. It keeps the 20-minute clock visible, recalculates the target pace after every completed round, counts rounds, and creates a 1080×1920 workout result image.
+Round 27 is a focused Cindy and AMRAP pace timer for web, Android, and Windows. It keeps the 20-minute clock visible, recalculates the target pace after every completed round, counts rounds, and creates a 1080×1920 workout result image.
 
 ## Product
 
@@ -10,6 +10,8 @@ Round 27 is a focused Cindy and AMRAP pace timer for web and Android. It keeps t
 - Offline Android bundle with no account, analytics, ads, or network dependency.
 - Native Android haptics, screen-awake behavior, back-button handling, and result sharing.
 - Browser result download and Android native share sheet.
+- Five generated CrossFit story backgrounds with device-local selection memory.
+- Windows-native PNG save dialog, fullscreen support, and display sleep prevention.
 
 ## Requirements
 
@@ -48,13 +50,38 @@ npm run android:bundle
 
 The Play Store requires a signed release App Bundle. Keep the keystore outside Git and configure release signing before uploading the `.aab`.
 
+## Windows
+
+Run the desktop app during development:
+
+```bash
+npm run desktop:dev
+```
+
+Build both Windows x64 distributions:
+
+```bash
+npm run desktop:package
+```
+
+The click-to-run portable app and installer are written to:
+
+```text
+release/portable/Round-27-Portable-1.0.0-x64.exe
+release/installer/Round-27-Setup-1.0.0-x64.exe
+```
+
+The generated executables are intentionally excluded from Git. Pushing the repository runs the Windows workflow and makes both files downloadable from GitHub Actions. Pushing a version tag such as `v1.0.0` also creates a GitHub Release containing both executables.
+
+Public Windows distribution should use a trusted code-signing certificate to avoid an unsigned-app SmartScreen warning. Do not commit signing certificates or passwords.
+
 ## Release validation
 
 ```bash
 npm run check:release
 ```
 
-This builds the web app, verifies the rendered site, creates and syncs the offline mobile bundle, and verifies the Android assets. GitHub Actions also builds a debug APK for each push and pull request.
+This builds the web app, verifies the rendered site, creates and syncs the offline mobile bundle, verifies the Android assets, and checks the Windows desktop bundle. GitHub Actions builds a debug APK and both Windows executables.
 
 ## Store materials
 
