@@ -454,19 +454,19 @@
       <section class="rounds-block" aria-labelledby="roundsLabel">
         <div class="section-head">
           <p class="label" id="roundsLabel">Rounds</p>
-          <span class="goal" id="goalBadge">GOAL 26</span>
+          <span class="goal" id="goalBadge">GOAL 27</span>
         </div>
-        <div class="round-count" id="setCount" aria-live="polite">0<span id="setGoal">/26</span></div>
+        <div class="round-count" id="setCount" aria-live="polite">0<span id="setGoal">/27</span></div>
         <div class="round-track" aria-hidden="true"><div class="round-fill" id="setFill"></div></div>
       </section>
 
       <section class="pace" aria-labelledby="paceLabel">
         <div>
           <p class="label" id="paceLabel">Current round</p>
-          <div class="pace-time" id="roundTimer" aria-live="polite">00:46</div>
+          <div class="pace-time" id="roundTimer" aria-live="polite">00:44</div>
         </div>
         <div class="pace-stats">
-          <div class="pace-stat"><span>TARGET</span><strong id="nextPace">00:46</strong></div>
+          <div class="pace-stat"><span>TARGET</span><strong id="nextPace">00:44</strong></div>
           <div class="pace-stat"><span>LAST</span><strong id="lastSetTime">—</strong></div>
         </div>
       </section>
@@ -495,7 +495,7 @@
           <div class="setup-head"><strong>WORKOUT SETUP</strong><button class="close-setup" id="closeSetupBtn" type="button" aria-label="Close setup">×</button></div>
           <button class="challenge-preset" id="challengePresetBtn" type="button">27 ROUND CHALLENGE</button>
           <div class="fields">
-            <div class="field"><label for="targetInput">GOAL ROUNDS</label><input id="targetInput" type="number" inputmode="numeric" min="1" max="999" step="1" value="26" /></div>
+            <div class="field"><label for="targetInput">GOAL ROUNDS</label><input id="targetInput" type="number" inputmode="numeric" min="1" max="999" step="1" value="27" /></div>
             <div class="field"><label for="durationInput">TIME CAP / MIN</label><input id="durationInput" type="number" inputmode="numeric" min="1" max="180" step="1" value="20" /></div>
           </div>
           <button class="apply-setup" id="applySetupBtn" type="button">APPLY</button>
@@ -506,16 +506,16 @@
         <div class="result-content">
           <div class="result-top"><strong>ROUND 27</strong><span id="resultDate">WORKOUT COMPLETE</span></div>
           <p class="result-kicker">WORKOUT COMPLETE</p>
-          <div class="result-rounds" id="resultRounds">26</div>
+          <div class="result-rounds" id="resultRounds">27</div>
           <p class="result-rounds-label">ROUNDS</p>
           <div class="result-metrics">
             <div class="result-metric"><span>TOTAL TIME</span><strong id="resultTotalTime">20:00</strong></div>
-            <div class="result-metric"><span>AVG / ROUND</span><strong id="resultAverage">00:46</strong></div>
+            <div class="result-metric"><span>AVG / ROUND</span><strong id="resultAverage">00:44</strong></div>
           </div>
           <div class="result-reps">
-            <div class="result-rep"><strong id="resultPullups">130</strong><span>PULL-UPS</span></div>
-            <div class="result-rep"><strong id="resultPushups">260</strong><span>PUSH-UPS</span></div>
-            <div class="result-rep"><strong id="resultSquats">390</strong><span>SQUATS</span></div>
+            <div class="result-rep"><strong id="resultPullups">135</strong><span>PULL-UPS</span></div>
+            <div class="result-rep"><strong id="resultPushups">270</strong><span>PUSH-UPS</span></div>
+            <div class="result-rep"><strong id="resultSquats">405</strong><span>SQUATS</span></div>
           </div>
         </div>
         <div class="result-actions">
@@ -566,7 +566,7 @@
         const toastEl = $("toast");
 
         let state = "idle";
-        let targetSets = 26;
+        let targetSets = 27;
         let durationMs = 20 * 60 * 1000;
         let remainingMs = durationMs;
         let setsDone = 0;
@@ -591,7 +591,7 @@
         };
 
         const readSettings = () => {
-          targetSets = clampInteger(targetInput.value, 1, 999, 26);
+          targetSets = clampInteger(targetInput.value, 1, 999, 27);
           const minutes = clampInteger(durationInput.value, 1, 180, 20);
           targetInput.value = targetSets;
           durationInput.value = minutes;
