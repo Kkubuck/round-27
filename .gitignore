@@ -38,3 +38,11 @@ yarn-error.log*
 /.wrangler/
 /outputs/
 /work/
+/mobile-dist/
+/android/.gradle/
+/android/local.properties
+/android/app/build/
+/android/build/
+/resources/generated/
+*.jks
+*.keystore

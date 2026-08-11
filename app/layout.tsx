@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cindy AMRAP Timer",
-  description: "A monochrome CrossFit Cindy timer with dynamic set pacing.",
+  title: "Round 27 — Cindy AMRAP Timer",
+  description: "A clean Cindy timer with dynamic round pacing, result tracking, and story sharing.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

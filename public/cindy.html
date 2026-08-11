@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
-    <title>CINDY — AMRAP TIMER</title>
+    <title>ROUND 27 — AMRAP TIMER</title>
     <style>
       :root {
         color-scheme: dark;
@@ -292,6 +292,20 @@
         text-align: right;
       }
 
+      .challenge-preset {
+        width: 100%;
+        height: 42px;
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        color: var(--white);
+        background: transparent;
+        font-size: .62rem;
+        font-weight: 900;
+        letter-spacing: .15em;
+      }
+
+      .challenge-preset:hover { border-color: var(--white); }
+
       .apply-setup {
         width: 100%;
         height: 50px;
@@ -427,7 +441,7 @@
   <body>
     <main class="story">
       <header class="topline">
-        <div class="wordmark">CINDY <span>AMRAP 20</span></div>
+        <div class="wordmark">ROUND 27 <span>CINDY / AMRAP 20</span></div>
         <div class="status" id="statusText" aria-live="polite">READY</div>
       </header>
 
@@ -479,6 +493,7 @@
       <aside class="setup-sheet" id="setupSheet" aria-hidden="true">
         <div class="setup-card">
           <div class="setup-head"><strong>WORKOUT SETUP</strong><button class="close-setup" id="closeSetupBtn" type="button" aria-label="Close setup">×</button></div>
+          <button class="challenge-preset" id="challengePresetBtn" type="button">27 ROUND CHALLENGE</button>
           <div class="fields">
             <div class="field"><label for="targetInput">GOAL ROUNDS</label><input id="targetInput" type="number" inputmode="numeric" min="1" max="999" step="1" value="26" /></div>
             <div class="field"><label for="durationInput">TIME CAP / MIN</label><input id="durationInput" type="number" inputmode="numeric" min="1" max="180" step="1" value="20" /></div>
@@ -489,7 +504,7 @@
 
       <section class="result-sheet" id="resultSheet" aria-hidden="true">
         <div class="result-content">
-          <div class="result-top"><strong>CINDY</strong><span id="resultDate">WORKOUT COMPLETE</span></div>
+          <div class="result-top"><strong>ROUND 27</strong><span id="resultDate">WORKOUT COMPLETE</span></div>
           <p class="result-kicker">WORKOUT COMPLETE</p>
           <div class="result-rounds" id="resultRounds">26</div>
           <p class="result-rounds-label">ROUNDS</p>
@@ -534,6 +549,7 @@
         const fullscreenBtn = $("fullscreenBtn");
         const setupSheet = $("setupSheet");
         const closeSetupBtn = $("closeSetupBtn");
+        const challengePresetBtn = $("challengePresetBtn");
         const applySetupBtn = $("applySetupBtn");
         const targetInput = $("targetInput");
         const durationInput = $("durationInput");
@@ -557,6 +573,7 @@
         let endAt = 0;
         let tickHandle = null;
         let toastHandle = null;
+        let resetArmUntil = 0;
         let currentSetBudgetMs = durationMs / targetSets;
         let roundElapsedMs = 0;
         let roundStartedAt = 0;
@@ -644,6 +661,16 @@
           }, delay);
         };
 
+        const nativeBridge = window.Round27Native;
+
+        const haptic = (kind = "light") => {
+          if (nativeBridge?.isNative) {
+            nativeBridge.haptic(kind).catch(() => {});
+            return;
+          }
+          if (navigator.vibrate) navigator.vibrate(kind === "heavy" ? 80 : 25);
+        };
+
         const render = () => {
           timerEl.textContent = formatTime(remainingMs);
           timerEl.classList.toggle("is-low", remainingMs > 0 && remainingMs <= 60000);
@@ -683,7 +710,7 @@
           beep(520);
           beep(760, 220);
           showToast(`${setsDone} ROUNDS COMPLETE`);
-          if (navigator.vibrate) navigator.vibrate([120, 80, 180]);
+          haptic("success");
         };
 
         const tick = () => {
@@ -723,7 +750,7 @@
           roundElapsedMs = 0;
           if (state === "running") roundStartedAt = Date.now();
           if (setsDone === targetSets) { beep(920); showToast("GOAL REACHED"); }
-          if (navigator.vibrate) navigator.vibrate(25);
+          haptic(setsDone === targetSets ? "heavy" : "light");
           render();
         };
 
@@ -735,12 +762,26 @@
         };
 
         const resetWorkout = () => {
+          if (state !== "idle" && Date.now() > resetArmUntil) {
+            resetArmUntil = Date.now() + 1800;
+            showToast("TAP RESET AGAIN");
+            return;
+          }
           clearInterval(tickHandle);
           tickHandle = null;
           prepareWorkout();
           state = "idle";
           render();
           showToast("RESET");
+        };
+
+        const applyChallengePreset = () => {
+          targetInput.value = 27;
+          durationInput.value = 20;
+          prepareWorkout();
+          render();
+          closeSetup();
+          showToast("27 ROUND CHALLENGE");
         };
 
         const openSetup = () => {
@@ -818,6 +859,13 @@
           return size;
         };
 
+        const blobToDataUrl = (blob) => new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+
         const saveStory = async () => {
           saveStoryBtn.disabled = true;
           saveStoryBtn.textContent = "SAVING…";
@@ -842,8 +890,8 @@
             context.textBaseline = "alphabetic";
             context.fillStyle = "#fff";
             context.textAlign = "left";
-            fitCanvasText(context, "CINDY", 360, 54, 900);
-            context.fillText("CINDY", 76, 114);
+            fitCanvasText(context, "ROUND 27", 420, 54, 900);
+            context.fillText("ROUND 27", 76, 114);
             context.textAlign = "right";
             context.fillStyle = "#c2c2c2";
             fitCanvasText(context, stats.date, 360, 23, 800);
@@ -928,15 +976,21 @@
 
             const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
             if (!blob) throw new Error("Image export failed");
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = `cindy-${new Date().toISOString().slice(0, 10)}.png`;
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
-            showToast("STORY SAVED");
+            const fileName = `round-27-${new Date().toISOString().slice(0, 10)}.png`;
+            if (nativeBridge?.isNative) {
+              await nativeBridge.sharePng(await blobToDataUrl(blob), fileName);
+              showToast("SHARE READY");
+            } else {
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = fileName;
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+              setTimeout(() => URL.revokeObjectURL(url), 1000);
+              showToast("STORY SAVED");
+            }
           } catch {
             showToast("SAVE FAILED");
           } finally {
@@ -952,10 +1006,29 @@
         resetBtn.addEventListener("click", resetWorkout);
         setupBtn.addEventListener("click", openSetup);
         closeSetupBtn.addEventListener("click", closeSetup);
+        challengePresetBtn.addEventListener("click", applyChallengePreset);
         setupSheet.addEventListener("click", (event) => { if (event.target === setupSheet) closeSetup(); });
         applySetupBtn.addEventListener("click", () => { prepareWorkout(); render(); closeSetup(); });
         saveStoryBtn.addEventListener("click", saveStory);
         closeResultBtn.addEventListener("click", closeResult);
+
+        if (nativeBridge?.isNative) {
+          saveStoryBtn.textContent = "SHARE STORY";
+          fullscreenBtn.hidden = true;
+          window.addEventListener("round27:native-back", (event) => {
+            if (resultSheet.classList.contains("is-open")) {
+              event.preventDefault();
+              closeResult();
+            } else if (setupSheet.classList.contains("is-open")) {
+              event.preventDefault();
+              closeSetup();
+            } else if (state === "running") {
+              event.preventDefault();
+              pauseTimer();
+              showToast("PAUSED");
+            }
+          });
+        }
 
         fullscreenBtn.addEventListener("click", async () => {
           try {
