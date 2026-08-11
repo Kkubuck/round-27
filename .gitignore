@@ -20,7 +20,6 @@
 
 # misc
 .DS_Store
-*.pem
 
 # debug
 npm-debug.log*
@@ -28,8 +27,31 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# local configuration and credentials
 .env*
+.npmrc
+.openai/hosting.json
+credentials.*
+secrets.*
+service-account*.json
+google-services.json
+GoogleService-Info.plist
+
+# signing keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.mobileprovision
+*.cer
+*.crt
+*.der
+*.snk
+/certificates/
+/desktop/signing/
+/android/key.properties
 
 # vercel
 .vercel
@@ -47,5 +69,3 @@ yarn-error.log*
 /android/app/build/
 /android/build/
 /resources/generated/
-*.jks
-*.keystore

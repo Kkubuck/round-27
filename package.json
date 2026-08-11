@@ -1,7 +1,7 @@
 {
   "name": "round-27-amrap-timer",
   "version": "1.0.0",
-  "description": "Round 27 is a dynamic Cindy and AMRAP pace timer for web, Android, and Windows.",
+  "description": "A focused Cindy and AMRAP pace timer with dynamic round targets and shareable results.",
   "author": "Round 27",
   "private": true,
   "main": "desktop/main.mjs",
