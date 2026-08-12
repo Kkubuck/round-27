@@ -2,7 +2,7 @@
 
 ## Before the first internal test
 
-- [ ] Replace the placeholder support email in the privacy policy.
+- [x] Confirm the public support contact in the privacy policy.
 - [ ] Confirm the final developer name and application package ID.
 - [ ] Create a release keystore and store it outside Git.
 - [ ] Run `npm run check:release`.
@@ -13,6 +13,17 @@
 - [ ] Test native sharing to Instagram Stories, Messages and Files.
 - [ ] Test audio and haptics with silent mode and Bluetooth audio.
 - [ ] Test Android back behavior on setup, results and the live timer.
+- [ ] Install the Windows setup and portable builds on a clean Windows x64 account.
+- [ ] Install both macOS DMGs on matching Apple Silicon and Intel Macs.
+- [ ] Verify native Story saving on Windows and macOS.
+- [ ] Verify every published file against its platform SHA-256 manifest.
+
+## Direct download release
+
+- [ ] Confirm Windows x64 installer and portable executable are present.
+- [ ] Confirm macOS arm64 and x64 DMG and ZIP files are present.
+- [ ] Confirm the debug-signed Android APK installs on a physical device.
+- [ ] Confirm unsigned/notarization notices are included in the release documentation.
 
 ## Play Console
 

@@ -30,7 +30,7 @@ await Promise.all([
   writeFile(resolve(outputRoot, "index.html"), desktopHtml, "utf8"),
   copyFile(resolve(projectRoot, "public", "favicon.svg"), resolve(outputRoot, "favicon.svg")),
   cp(resolve(projectRoot, "public", "backgrounds"), resolve(outputRoot, "backgrounds"), { recursive: true }),
-  sharp(iconSvg).resize(512, 512).png().toFile(resolve(resourceRoot, "icon.png")),
+  sharp(iconSvg).resize(1024, 1024).png().toFile(resolve(resourceRoot, "icon.png")),
 ]);
 
-console.log("Round 27 Windows bundle is ready.");
+console.log("Round 27 desktop bundle is ready.");

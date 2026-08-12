@@ -1,6 +1,6 @@
 # Round 27 Privacy Policy
 
-Effective date: August 11, 2026
+Effective date: August 12, 2026
 
 Round 27 does not require an account and does not collect, transmit, sell, or share personal data.
 
@@ -10,4 +10,4 @@ Round 27 does not include advertising, analytics, location tracking, health-plat
 
 If future versions add data collection or third-party services, this policy and the Google Play Data safety declaration must be updated before release.
 
-Contact: replace-this-with-your-support-email@example.com
+Contact: https://github.com/Kkubuck/round-27/issues

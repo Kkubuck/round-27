@@ -14,4 +14,4 @@ Please use GitHub's private vulnerability reporting flow:
 
 Do not open a public issue for a vulnerability and do not attach credentials, signing keys, personal workout data, or other secrets. Include the affected version, operating system, reproduction steps, and expected impact.
 
-Round 27 does not require API keys or cloud credentials. The initial executable releases are not code-signed; a Microsoft Defender SmartScreen warning for an unknown publisher is therefore expected and is not, by itself, a vulnerability. Release checksums are published in `SHA256SUMS.txt`.
+Round 27 does not require API keys or cloud credentials. Windows and macOS releases are not currently code-signed or notarized, so operating-system publisher warnings are expected and are not, by themselves, vulnerabilities. The downloadable Android APK is debug-signed for sideload testing rather than store distribution. Platform-specific release checksums are published as `SHA256SUMS-*.txt`.
