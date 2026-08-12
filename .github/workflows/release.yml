@@ -214,20 +214,21 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mapfile -d '' assets < <(
-            find release -type f \(
-              -name '*.exe' -o
-              -name '*.dmg' -o
-              -name '*.zip' -o
-              -name '*.apk' -o
-              -name 'SHA256SUMS-*.txt'
-            \) -print0 | sort -z
-          )
+          mapfile -d '' assets < <(find release -type f -print0 | sort -z)
           if [[ ${#assets[@]} -ne 11 ]]; then
             printf 'Expected 11 release files, found %s:\n' "${#assets[@]}" >&2
             printf '  %s\n' "${assets[@]}" >&2
             exit 1
           fi
+          for asset in "${assets[@]}"; do
+            case "$asset" in
+              *.exe|*.dmg|*.zip|*.apk|*/SHA256SUMS-*.txt) ;;
+              *)
+                printf 'Unexpected release file: %s\n' "$asset" >&2
+                exit 1
+                ;;
+            esac
+          done
           gh release create "$GITHUB_REF_NAME" "${assets[@]}" \
             --generate-notes \
             --title "Round 27 $GITHUB_REF_NAME"
