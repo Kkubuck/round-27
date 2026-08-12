@@ -1139,7 +1139,7 @@
             const fileName = `round-27-${new Date().toISOString().slice(0, 10)}.png`;
             if (nativeBridge?.isNative) {
               const saved = await nativeBridge.sharePng(await blobToDataUrl(blob), fileName);
-              showToast(saved === false ? "SAVE CANCELED" : nativeBridge.platform === "windows" ? "STORY SAVED" : "SHARE READY");
+              showToast(saved === false ? "SAVE CANCELED" : nativeBridge.platform === "android" ? "SHARE READY" : "STORY SAVED");
             } else {
               const url = URL.createObjectURL(blob);
               const link = document.createElement("a");
@@ -1174,7 +1174,7 @@
         backgroundChoices.forEach((choice) => choice.addEventListener("click", () => setStoryBackground(choice.dataset.background)));
 
         if (nativeBridge?.isNative) {
-          saveStoryBtn.textContent = nativeBridge.platform === "windows" ? "SAVE STORY" : "SHARE STORY";
+          saveStoryBtn.textContent = nativeBridge.platform === "android" ? "SHARE STORY" : "SAVE STORY";
           fullscreenBtn.hidden = true;
           window.addEventListener("round27:native-back", (event) => {
             if (resultSheet.classList.contains("is-open")) {

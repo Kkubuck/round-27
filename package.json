@@ -1,6 +1,6 @@
 {
   "name": "round-27-amrap-timer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A focused Cindy and AMRAP pace timer with dynamic round targets and shareable results.",
   "author": "Round 27",
   "private": true,
@@ -16,13 +16,15 @@
     "mobile:build": "node scripts/build-mobile.mjs",
     "mobile:sync": "npm run mobile:build && cap sync android",
     "mobile:icons": "node scripts/generate-android-icons.mjs",
-    "android:debug": "npm run mobile:sync && npm run mobile:icons && cd android && gradlew.bat assembleDebug",
-    "android:bundle": "npm run mobile:sync && npm run mobile:icons && cd android && gradlew.bat bundleRelease",
+    "android:debug": "npm run mobile:sync && npm run mobile:icons && node scripts/run-gradle.mjs assembleDebug",
+    "android:bundle": "npm run mobile:sync && npm run mobile:icons && node scripts/run-gradle.mjs bundleRelease",
     "desktop:build": "node scripts/build-desktop.mjs",
     "desktop:dev": "npm run desktop:build && electron .",
     "desktop:portable": "npm run desktop:build && electron-builder --win portable --x64 --config.directories.output=release/portable --publish never",
     "desktop:installer": "npm run desktop:build && electron-builder --win nsis --x64 --config.directories.output=release/installer --publish never",
-    "desktop:package": "npm run desktop:portable && npm run desktop:installer",
+    "desktop:windows": "npm run desktop:portable && npm run desktop:installer",
+    "desktop:mac": "npm run desktop:build && node scripts/build-macos-icon.mjs && electron-builder --mac dmg zip --config.directories.output=release/macos --publish never",
+    "desktop:package": "npm run desktop:windows",
     "check:desktop": "npm run desktop:build && node --test tests/desktop-build.test.mjs",
     "check:release": "npm run test && npm run mobile:sync && node --test tests/mobile-build.test.mjs && npm run check:desktop",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern mobile-dist --ignore-pattern desktop-dist --ignore-pattern desktop-resources --ignore-pattern release --ignore-pattern android"
@@ -82,6 +84,16 @@
     ],
     "win": {
       "icon": "desktop-resources/icon.png"
+    },
+    "mac": {
+      "icon": "desktop-resources/icon.icns",
+      "category": "public.app-category.healthcare-fitness",
+      "artifactName": "Round-27-${version}-macOS-${arch}.${ext}",
+      "identity": null,
+      "hardenedRuntime": false
+    },
+    "dmg": {
+      "backgroundColor": "#000000"
     },
     "portable": {
       "artifactName": "Round-27-Portable-${version}-${arch}.${ext}"

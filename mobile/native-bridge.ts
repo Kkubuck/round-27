@@ -7,7 +7,7 @@ type HapticKind = "light" | "heavy" | "success";
 
 type Round27NativeBridge = {
   isNative: boolean;
-  platform: "android" | "windows";
+  platform: "android" | "macos" | "windows";
   haptic: (kind?: HapticKind) => Promise<void>;
   sharePng: (dataUrl: string, fileName: string) => Promise<void | boolean>;
 };

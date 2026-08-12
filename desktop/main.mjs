@@ -75,7 +75,13 @@ const createWindow = async () => {
     if (!url.startsWith("file://")) event.preventDefault();
   });
   mainWindow.webContents.on("before-input-event", (event, input) => {
-    if (input.type !== "keyDown" || input.key !== "F11") return;
+    const isF11 = input.type === "keyDown" && input.key === "F11";
+    const isMacFullscreen = process.platform === "darwin"
+      && input.type === "keyDown"
+      && input.meta
+      && input.control
+      && input.key.toLowerCase() === "f";
+    if (!isF11 && !isMacFullscreen) return;
     event.preventDefault();
     mainWindow.setFullScreen(!mainWindow.isFullScreen());
   });
@@ -96,7 +102,7 @@ app.on("second-instance", () => {
 });
 
 app.whenReady().then(async () => {
-  Menu.setApplicationMenu(null);
+  if (process.platform !== "darwin") Menu.setApplicationMenu(null);
   displaySleepBlocker = powerSaveBlocker.start("prevent-display-sleep");
   await createWindow();
 
