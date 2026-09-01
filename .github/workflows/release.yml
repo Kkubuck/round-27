@@ -19,9 +19,9 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -47,7 +47,7 @@ jobs:
           }
           $lines | Set-Content -Encoding ascii release/SHA256SUMS-windows.txt
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: round-27-windows-x64
           path: |
@@ -71,9 +71,9 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -134,7 +134,7 @@ jobs:
             printf '%s  %s\n' "$hash" "$(basename "$file")" >> "release/SHA256SUMS-macos-${{ matrix.arch }}.txt"
           done
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: round-27-macos-${{ matrix.arch }}
           path: |
@@ -149,19 +149,19 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: "21"
 
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
 
       - run: npm ci
       - run: npm audit --omit=dev
@@ -184,7 +184,7 @@ jobs:
           hash=$(shasum -a 256 "release/android/Round-27-Android-${version}.apk" | cut -d ' ' -f 1)
           printf '%s  %s\n' "$hash" "Round-27-Android-${version}.apk" > release/SHA256SUMS-android.txt
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: round-27-android
           path: |
@@ -201,7 +201,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           pattern: round-27-*
           path: release
